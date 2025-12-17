@@ -1,0 +1,114 @@
+erDiagram
+    tipo_usuario ||--o{ usuario : tiene
+    tipo_documento ||--o{ usuario : tiene
+    usuario ||--o{ vehiculo : posee
+    marca_vehiculo ||--o{ vehiculo : es_de
+    usuario ||--o{ entrada_salida : registra_entrada
+    usuario ||--o{ entrada_salida : registra_salida
+    vehiculo ||--o{ entrada_salida : realiza
+    puerta_acceso ||--o{ entrada_salida : entrada_por
+    puerta_acceso ||--o{ entrada_salida : salida_por
+    celda_parqueo ||--o{ entrada_salida : ocupa
+    area_parqueo ||--o{ celda_parqueo : contiene
+    tipo_celda ||--o{ celda_parqueo : tipo
+    vehiculo ||--o{ incidencia : tiene
+    tipo_incidencia ||--o{ incidencia : clasifica
+    usuario ||--o{ incidencia : registra
+
+    tipo_usuario {
+        int id_tipo_usuario PK
+        varchar nombre_tipo
+    }
+
+    tipo_documento {
+        int id_tipo_documento PK
+        varchar nombre_tipo
+    }
+
+    usuario {
+        int id_usuario PK
+        int id_tipo_documento FK
+        varchar numero_documento
+        varchar nombre_completo
+        varchar email
+        varchar celular
+        varchar fotografia
+        int id_tipo_usuario FK
+        varchar password
+        enum estado
+        datetime fecha_registro
+    }
+
+    marca_vehiculo {
+        int id_marca PK
+        varchar nombre_marca
+    }
+
+    vehiculo {
+        int id_vehiculo PK
+        varchar placa
+        varchar color
+        int id_marca FK
+        varchar modelo
+        int id_usuario_propietario FK
+        datetime fecha_registro
+    }
+
+    restriccion_pico_placa {
+        int id_restriccion PK
+        int dia_semana
+        int ultimo_digito_placa
+        enum activo
+    }
+
+    puerta_acceso {
+        int id_puerta PK
+        varchar nombre_puerta
+        varchar ubicacion
+    }
+
+    area_parqueo {
+        int id_area PK
+        varchar nombre_area
+        varchar piso_nivel
+    }
+
+    tipo_celda {
+        int id_tipo_celda PK
+        varchar nombre_tipo
+    }
+
+    celda_parqueo {
+        int id_celda PK
+        varchar codigo_celda
+        int id_area FK
+        int id_tipo_celda FK
+        enum estado
+    }
+
+    entrada_salida {
+        int id_movimiento PK
+        int id_vehiculo FK
+        int id_puerta_entrada FK
+        datetime fecha_hora_entrada
+        int id_puerta_salida FK
+        datetime fecha_hora_salida
+        time tiempo_transcurrido
+        int id_celda FK
+        int id_usuario_registro_entrada FK
+        int id_usuario_registro_salida FK
+    }
+
+    tipo_incidencia {
+        int id_tipo_incidencia PK
+        varchar nombre_tipo
+    }
+
+    incidencia {
+        int id_incidencia PK
+        int id_vehiculo FK
+        int id_tipo_incidencia FK
+        datetime fecha_hora
+        text descripcion
+        int id_usuario_registro FK
+    }
